@@ -13,6 +13,7 @@ class FarmInput(BaseModel):
     mock_rainfall_mm: Optional[int] = Field(default=None, ge=0, le=3000)
     mock_soil_ph: Optional[float] = Field(default=None, ge=3, le=10)
     mock_organic_matter_percent: Optional[float] = Field(default=None, ge=0, le=20)
+    mock_soil_type: str = "loam"
 
 
 class ClimateData(BaseModel):
@@ -22,11 +23,20 @@ class ClimateData(BaseModel):
     source: str
 
 
+class SoilPHCheck(BaseModel):
+    status: str
+    current_ph: float
+    recommended_ph: dict[str, float]
+    solution: str
+
+
 class SoilData(BaseModel):
     texture: str
     ph: float
     organic_matter_percent: float
     source: str
+    ph_check: SoilPHCheck
+
 
 
 class Risk(BaseModel):

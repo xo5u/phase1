@@ -15,6 +15,7 @@ const initialFarm = {
   mock_rainfall_mm: 420,
   mock_soil_ph: 7.1,
   mock_organic_matter_percent: 2.7,
+  mock_soil_type: 'loam',
 }
 
 function Field({ label, name, value, onChange, suffix, step = 'any' }) {
@@ -61,7 +62,16 @@ export default function App() {
 
   function update(event) {
     const { name, value } = event.target
-    setFarm((current) => ({ ...current, [name]: name === 'previous_crop' ? value : Number(value) }))
+
+    const stringFields = ['previous_crop', 'mock_soil_type']
+    const updatedValue = stringFields.includes(name)
+      ? value
+      : Number(value)
+
+    setFarm((current) => ({
+      ...current,
+      [name]: updatedValue,
+    }))
   }
 
   function updateLocation(location) {
@@ -147,6 +157,24 @@ export default function App() {
                   <RangeField label="Organic matter" name="mock_organic_matter_percent" value={farm.mock_organic_matter_percent} onChange={update} min="0.5" max="8" step="0.1" suffix="%" />
                 </div>
               </fieldset>
+              
+              <label className="field">
+                <span >Soil type</span>
+                <div className="select-wrap">
+                  <select
+                    name="mock_soil_type"
+                    value={farm.mock_soil_type}
+                    onChange={update}
+                  >
+                    <option value="sandy">Sandy soil</option>
+                    <option value="loam">Loam soil</option>
+                    <option value="silt">Silt soil</option>
+                    <option value="clay">Clay soil</option>
+                    <option value="peat">Peat soil</option>
+                  </select>
+                  <ChevronDown size={17} />
+                </div>
+              </label>
 
               <fieldset>
                 <legend><span>Resources & history</span><small>Demo inputs</small></legend>

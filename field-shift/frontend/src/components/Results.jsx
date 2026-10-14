@@ -25,6 +25,9 @@ export default function Results({ data }) {
   }
 
   const { analysis, rotation } = data
+  const phCheck = analysis.soil.ph_check
+  const phRecommended = phCheck?.status === 'Within recommended range'
+
   return (
     <section className="results" aria-live="polite">
       <div className="results-heading">
@@ -66,15 +69,31 @@ export default function Results({ data }) {
           <div className="card-label"><FlaskConical size={17} /> Soil snapshot</div>
           <ChevronDown className="card-chevron" size={17} />
           <strong>{analysis.soil.texture}</strong>
-          <span>sample soil texture</span>
+          <span>soil type</span>
           <div className="soil-line">
             <div><b>{analysis.soil.ph}</b><span>pH</span></div>
             <div><b>{analysis.soil.organic_matter_percent}%</b><span>organic matter</span></div>
           </div>
-          <small>{analysis.soil.source}</small>
+          <p className={`soil-ph-status ${phCheck ? (phRecommended ? 'is-recommended' : 'is-not-recommended') : ''}`}>
+            {phCheck
+              ? phRecommended
+                ? 'pH is within the recommended range'
+                : 'pH is outside the recommended range'
+              : 'pH recommendation unavailable'}
+          </p>
+          {/* <small>{analysis.soil.source}</small> */}
+
           <div className="snapshot-detail">
-            <b>How this demo value changes</b>
-            <p>This value comes from the adjustable pH and organic-matter controls. Change either control and analyze again to recalculate crop fit.</p>
+            <b>Soil pH advice</b>
+
+            {phCheck ? (
+              <>
+                <p><strong>{phCheck.status}</strong> ({phCheck.recommended_ph.min}–{phCheck.recommended_ph.max})</p>
+                <p>{phCheck.solution}</p>
+              </>
+            ) : (
+              <p>Soil pH advice is not available from the API yet.</p>
+            )}
           </div>
         </button>
 
@@ -153,4 +172,3 @@ export default function Results({ data }) {
     </section>
   )
 }
-

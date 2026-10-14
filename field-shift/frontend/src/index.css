@@ -81,6 +81,17 @@ legend > span { display: flex; align-items: center; gap: 6px; }
 .map-panel.interactive { cursor: crosshair; touch-action: none; user-select: none; outline: none; transition: border-color .2s, box-shadow .2s; }
 .map-panel.interactive:hover, .map-panel.interactive:focus-visible { border-color: #73975d; box-shadow: 0 0 0 3px rgba(105,145,79,.14); }
 .map-panel.is-dragging { cursor: grabbing; }
+.location-map {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: auto;
+}
+
+.location-map .leaflet-container {
+  height: 50px;
+  width: 100%;
+  border-radius: 11px;
+}
 .map-grid { position: absolute; inset: 0; opacity: .5; background-image: linear-gradient(rgba(60,86,69,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(60,86,69,.14) 1px, transparent 1px); background-size: 26px 26px; }
 .map-land { position: absolute; background: #b4c6a5; opacity: .85; }.land-one { width: 55%; height: 75%; left: -9%; top: -23%; border-radius: 42% 47% 56% 40%; transform: rotate(17deg); }.land-two { width: 47%; height: 72%; right: -11%; bottom: -25%; border-radius: 60% 36% 52% 42%; transform: rotate(-14deg); }.land-three { width: 18%; height: 28%; left: 44%; bottom: -5%; border-radius: 50%; transform: rotate(24deg); }
 .map-pin { position: absolute; transform: translate(-50%, -50%); z-index: 2; transition: top .16s ease, left .16s ease; pointer-events: none; }.is-dragging .map-pin { transition: none; }.map-pin span { width: 31px; height: 31px; display: grid; place-items: center; background: #1d4c37; color: white; border: 4px solid rgba(255,255,255,.85); border-radius: 50% 50% 50% 8px; transform: rotate(-45deg); box-shadow: 0 5px 15px rgba(29,76,55,.3); }.map-pin svg { transform: rotate(45deg); }
@@ -101,16 +112,16 @@ legend > span { display: flex; align-items: center; gap: 6px; }
 .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }.insight-card { min-height: 208px; border: 1px solid #dce0d7; border-radius: 13px; padding: 18px; background: #fff; position: relative; overflow: hidden; }.climate-card { background: linear-gradient(145deg, #e8f0e5, #f9fbf6); }.climate-card:after { content: ""; width: 130px; height: 130px; position: absolute; top: -50px; right: -35px; border: 23px solid rgba(112,151,83,.08); border-radius: 50%; }
 .interactive-card { width: 100%; color: inherit; font: inherit; text-align: left; cursor: pointer; transition: border-color .2s, box-shadow .2s, transform .2s, min-height .25s; }
 .interactive-card:hover, .interactive-card:focus-visible { border-color: #88a772; box-shadow: 0 8px 22px rgba(39,72,49,.09); outline: none; transform: translateY(-1px); }
-.interactive-card.is-open { min-height: 302px; border-color: #719456; }
+.interactive-card.is-open { min-height: 350px; border-color: #719456; }
 .card-chevron { position: absolute; z-index: 2; right: 16px; top: 17px; color: #7f8b81; transition: transform .2s; }
 .interactive-card.is-open .card-chevron { transform: rotate(180deg); }
 .snapshot-detail { max-height: 0; margin-top: 0; padding-top: 0; border-top: 1px solid transparent; opacity: 0; overflow: hidden; transition: max-height .25s ease, opacity .2s, margin .25s, padding .25s; }
-.interactive-card.is-open .snapshot-detail { max-height: 105px; margin-top: 14px; padding-top: 12px; border-color: rgba(79,105,84,.16); opacity: 1; }
+.interactive-card.is-open .snapshot-detail { max-height: 220px; margin-top: 14px; padding-top: 12px; border-color: rgba(79,105,84,.16); opacity: 1; }
 .snapshot-detail b { display: block; color: #43554a; font-size: 9px; text-transform: uppercase; letter-spacing: .06em; }
 .snapshot-detail p { margin: 5px 0 0; color: #707c72; font-size: 9px; line-height: 1.5; }
 .interactive-card.is-open > small { position: static; display: block; margin-top: 16px; }
 .card-label { display: flex; align-items: center; gap: 7px; color: #536358; font-size: 10px; text-transform: uppercase; font-weight: 850; letter-spacing: .09em; margin-bottom: 20px; }.insight-card > strong { display: block; color: #264332; font-family: Georgia, serif; font-weight: 500; font-size: 29px; }.insight-card > span { color: #7d887f; font-size: 10px; }.insight-card > small { position: absolute; bottom: 14px; left: 18px; color: #8b948c; font-size: 8px; }
-.mini-stats { display: flex; gap: 13px; margin-top: 16px; }.mini-stats p { display: flex; align-items: center; gap: 5px; color: #7a847b; font-size: 9px; margin: 0; }.mini-stats b { color: #4e5c52; }.soil-line { display: flex; gap: 26px; margin-top: 16px; }.soil-line div { display: flex; flex-direction: column; }.soil-line b { font-size: 16px; color: #445348; }.soil-line span { color: #8b948c; font-size: 8px; text-transform: uppercase; }
+.mini-stats { display: flex; gap: 13px; margin-top: 16px; }.mini-stats p { display: flex; align-items: center; gap: 5px; color: #7a847b; font-size: 9px; margin: 0; }.mini-stats b { color: #4e5c52; }.soil-line { display: flex; gap: 26px; margin-top: 16px; }.soil-line div { display: flex; flex-direction: column; }.soil-line b { font-size: 16px; color: #445348; }.soil-line span { color: #8b948c; font-size: 8px; text-transform: uppercase; }.soil-ph-status { margin: 9px 0 0; color: #8b5a34; font-size: 9px; font-weight: 750; }.soil-ph-status.is-recommended { color: #3e7048; }
 .risk-card { grid-column: 1 / -1; min-height: 125px; padding-bottom: 14px; }.risk-card .card-label { margin-bottom: 13px; }.risk-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 11px; }.risk-list > button { display: flex; align-items: center; gap: 9px; padding: 10px; border: 1px solid transparent; background: #f7f8f4; border-radius: 8px; color: inherit; text-align: left; cursor: pointer; transition: .18s; }.risk-list > button:hover, .risk-list > button:focus-visible { border-color: #aebea2; outline: none; }.risk-list > button.is-selected { border-color: #789b5e; background: #f0f5e8; }.risk-list > button > svg { margin-left: auto; color: #8e988f; transition: transform .2s; }.risk-list > button.is-selected > svg { transform: rotate(180deg); }.risk-dot { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; box-shadow: 0 0 0 4px rgba(0,0,0,.04); }.risk-low { background: #65a653; }.risk-medium { background: #e9a44f; }.risk-high { background: #d86255; }.risk-list p { display: flex; flex-direction: column; gap: 2px; margin: 0; }.risk-list b { color: #4f5951; font-size: 10px; }.risk-list small { color: #919991; font-size: 8px; text-transform: uppercase; }
 .risk-explanation, .crop-selection { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; padding: 9px 11px; border-radius: 7px; background: #f5f7f1; color: #778078; }.risk-explanation svg, .crop-selection svg { flex: 0 0 auto; margin-top: 1px; color: #6e9452; }.risk-explanation p, .crop-selection p { margin: 0; font-size: 9px; line-height: 1.45; }.risk-explanation b, .crop-selection b { display: block; color: #4a574d; margin-bottom: 2px; }
 .section-title { display: flex; justify-content: space-between; align-items: flex-end; margin: 30px 0 13px; }.section-title h3 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: 22px; }.section-title > span { color: #9aa199; font-size: 9px; }

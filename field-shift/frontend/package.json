@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
     "lucide-react": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "latest",
@@ -21,4 +23,3 @@
     "vite": "latest"
   }
 }
-

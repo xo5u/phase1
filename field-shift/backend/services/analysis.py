@@ -1,5 +1,5 @@
 from mock_data.crops import CROP_PROFILES
-from mock_data.environment import climate_for, soil_for
+from mock_data.environment import check_soil_ph, climate_for, soil_for
 from schemas.farm import AnalysisResponse, FarmInput, RotationResponse
 
 DISCLAIMER = (
@@ -70,7 +70,7 @@ def _crop_scores(farm: FarmInput, soil: dict, climate: dict) -> list[dict]:
 
 def analyze_farm(farm: FarmInput) -> AnalysisResponse:
     climate = climate_for(farm.latitude)
-    soil = soil_for(farm.longitude)
+    soil = soil_for(farm.longitude, farm.mock_soil_type)
     if farm.mock_temperature_c is not None:
         climate["average_temperature_c"] = farm.mock_temperature_c
         climate["source"] = "User-adjusted demo climate scenario"
@@ -79,6 +79,7 @@ def analyze_farm(farm: FarmInput) -> AnalysisResponse:
         climate["source"] = "User-adjusted demo climate scenario"
     if farm.mock_soil_ph is not None:
         soil["ph"] = farm.mock_soil_ph
+        soil["ph_check"] = check_soil_ph(farm.mock_soil_type, farm.mock_soil_ph)
         soil["source"] = "User-adjusted demo soil scenario"
     if farm.mock_organic_matter_percent is not None:
         soil["organic_matter_percent"] = farm.mock_organic_matter_percent
@@ -126,7 +127,7 @@ def analyze_farm(farm: FarmInput) -> AnalysisResponse:
 
 def suggest_rotation(farm: FarmInput) -> RotationResponse:
     climate = climate_for(farm.latitude)
-    soil = soil_for(farm.longitude)
+    soil = soil_for(farm.longitude, farm.mock_soil_type)
     if farm.mock_temperature_c is not None:
         climate["average_temperature_c"] = farm.mock_temperature_c
     if farm.mock_rainfall_mm is not None:
@@ -153,4 +154,3 @@ def suggest_rotation(farm: FarmInput) -> RotationResponse:
             for index, crop in enumerate(crops)
         ],
     )
-
